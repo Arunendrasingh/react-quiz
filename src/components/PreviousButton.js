@@ -1,6 +1,6 @@
-function PreviousButton() {
+function PreviousButton({toggleButton}) {
     return (
-        <button className="btn">
+        <button className="btn" onClick={toggleButton}>
             Previous
         </button>
     )

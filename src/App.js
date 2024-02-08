@@ -21,6 +21,15 @@ function App() {
   const totalQuestion = questions.length;
   const [activeQuestion, setActiveQuestion] = useState(0);
 
+  //  Methods to move the questions
+  function nextQuestion(){
+    setActiveQuestion(activeQuestion+1)
+  }
+  
+  function previousQuestion(){
+    setActiveQuestion(activeQuestion-1)
+  }
+  
   // Load all question using use reducer
   useEffect(() => {
     fetch("http://localhost:8080/questions")
@@ -36,6 +45,8 @@ function App() {
         setStatus("error");
       });
   }, []);
+  console.log("Value is: ", questions[activeQuestion])
+  console.log("Active is: ", activeQuestion)
 
   return (
     <>
@@ -52,8 +63,8 @@ function App() {
         {status === "active" && (
           <>
             <Question questionDetail={questions[activeQuestion]} />
-            <NextButton />
-            <PreviousButton />
+            {activeQuestion !== questions.length-1 && <NextButton toggleButton={nextQuestion} />}
+            {activeQuestion !== 0 && <PreviousButton toggleButton={previousQuestion} />}
           </>
         )}
         {/* Add Two forword and previous button */}

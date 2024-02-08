@@ -1,5 +1,6 @@
 function Question({ questionDetail }) {
   // TODO: Add a method to verify correct option and mark the correct option with correct color from css file, & mark wrong option with red color and mark the correct answer with correct marker.
+  console.log("Question Detail: ", questionDetail)
   return (
     <div>
       <h4>{questionDetail.question}</h4>

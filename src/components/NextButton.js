@@ -1,6 +1,6 @@
-function NextButton() {
+function NextButton({toggleButton}) {
     return (
-        <button className="btn btn-ui">
+        <button className="btn btn-ui" onClick={toggleButton}>
             Next
         </button>
     )
