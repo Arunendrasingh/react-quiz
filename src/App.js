@@ -6,6 +6,8 @@ import Loader from "./components/Loader";
 import Error from "./components/Error";
 import StartScreen from "./components/StartScreen";
 import Question from "./components/Question";
+import NextButton from "./components/NextButton";
+import PreviousButton from "./components/PreviousButton";
 
 // const initialState = {
 //   questions: [],
@@ -48,9 +50,13 @@ function App() {
           />
         )}
         {status === "active" && (
-          <Question questionDetail={questions[activeQuestion]} />
+          <>
+            <Question questionDetail={questions[activeQuestion]} />
+            <NextButton />
+            <PreviousButton />
+          </>
         )}
-        {/* pass only active question. */}
+        {/* Add Two forword and previous button */}
       </Main>
     </>
   );
