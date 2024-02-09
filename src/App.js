@@ -9,27 +9,33 @@ import Question from "./components/Question";
 import NextButton from "./components/NextButton";
 import PreviousButton from "./components/PreviousButton";
 
-// const initialState = {
-//   questions: [],
-//   state: "loading",
-// };
-
 function App() {
   // First start with useState hook then switch to useReducer hook.
   const [questions, setQuestions] = useState([]);
   const [status, setStatus] = useState("loading"); // loading, error, ready, active, finished.
   const totalQuestion = questions.length;
   const [activeQuestion, setActiveQuestion] = useState(0);
+  const [answer, setAnswer] = useState(null);
+
+  // Current Version do not support the previous button functionality.
 
   //  Methods to move the questions
-  function nextQuestion(){
-    setActiveQuestion(activeQuestion+1)
+  function nextQuestion() {
+    setAnswer(null);
+    setActiveQuestion(activeQuestion + 1);
   }
-  
-  function previousQuestion(){
-    setActiveQuestion(activeQuestion-1)
+
+  function previousQuestion() {
+    setActiveQuestion(activeQuestion - 1);
   }
-  
+
+  // set answer
+  function setNewAnswer(answer) {
+    // Here set New Answer and the points.
+    setAnswer(answer);
+  }
+
+
   // Load all question using use reducer
   useEffect(() => {
     fetch("http://localhost:8080/questions")
@@ -38,15 +44,11 @@ function App() {
         // Here set the question ans status status with new data.
         setQuestions(data);
         setStatus("ready");
-        console.log(data);
       })
       .catch((reason) => {
-        console.error("Failed to Fetch.", reason);
         setStatus("error");
       });
   }, []);
-  console.log("Value is: ", questions[activeQuestion])
-  console.log("Active is: ", activeQuestion)
 
   return (
     <>
@@ -62,12 +64,19 @@ function App() {
         )}
         {status === "active" && (
           <>
-            <Question questionDetail={questions[activeQuestion]} />
-            {activeQuestion !== questions.length-1 && <NextButton toggleButton={nextQuestion} />}
-            {activeQuestion !== 0 && <PreviousButton toggleButton={previousQuestion} />}
+            <Question
+              questionDetail={questions[activeQuestion]}
+              toggleAnswer={setNewAnswer}
+              questionAnswer={answer}
+            />
+            {(activeQuestion !== questions.length - 1) & (answer !== null)? (
+              <NextButton toggleButton={nextQuestion} />
+            ):null}
+            {/* Do not support previous buttonfor now {activeQuestion !== 0 && (
+              <PreviousButton toggleButton={previousQuestion} />
+            )} */}
           </>
         )}
-        {/* Add Two forword and previous button */}
       </Main>
     </>
   );
