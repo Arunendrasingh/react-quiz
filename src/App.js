@@ -8,6 +8,7 @@ import StartScreen from "./components/StartScreen";
 import Question from "./components/Question";
 import NextButton from "./components/NextButton";
 import PreviousButton from "./components/PreviousButton";
+import Progress from "./components/Progress";
 
 function App() {
   // First start with useState hook then switch to useReducer hook.
@@ -16,6 +17,7 @@ function App() {
   const totalQuestion = questions.length;
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [answer, setAnswer] = useState(null);
+  const [point, setPoint] = useState(0);
 
   // Current Version do not support the previous button functionality.
 
@@ -33,8 +35,13 @@ function App() {
   function setNewAnswer(answer) {
     // Here set New Answer and the points.
     setAnswer(answer);
-  }
+    // Here validate the answer & if answer is valid then increase the point by 5.
+    let correctAnswer = questions[activeQuestion].correctOption;
 
+    if (correctAnswer === Number(answer)) {
+      setPoint((s) => s + 5);
+    }
+  }
 
   // Load all question using use reducer
   useEffect(() => {
@@ -50,6 +57,14 @@ function App() {
       });
   }, []);
 
+  function startQuiz() {
+    // set states like answer, points, activequestion to their intial question.
+    setStatus("active");
+    setActiveQuestion(0);
+    setAnswer(null);
+    setPoint(0);
+  }
+
   return (
     <>
       <Header />
@@ -59,19 +74,25 @@ function App() {
         {status === "ready" && (
           <StartScreen
             totalQuestions={totalQuestion}
-            toggleQuizStatus={setStatus}
+            toggleQuizStatus={startQuiz}
           />
         )}
         {status === "active" && (
           <>
+            <Progress
+              index={activeQuestion + 1}
+              totalQuestion={totalQuestion}
+              point={point}
+              totalPoint={totalQuestion*5}
+            />
             <Question
               questionDetail={questions[activeQuestion]}
               toggleAnswer={setNewAnswer}
               questionAnswer={answer}
             />
-            {(activeQuestion !== questions.length - 1) & (answer !== null)? (
+            {(activeQuestion !== questions.length - 1) & (answer !== null) ? (
               <NextButton toggleButton={nextQuestion} />
-            ):null}
+            ) : null}
             {/* Do not support previous buttonfor now {activeQuestion !== 0 && (
               <PreviousButton toggleButton={previousQuestion} />
             )} */}

@@ -5,7 +5,7 @@ function StartScreen({ totalQuestions, toggleQuizStatus }) {
       <h4>
         <i>{totalQuestions}</i> Questions to test your skill.
       </h4>
-      <button className="btn" onClick={() => {toggleQuizStatus("active")}}>Start Quiz</button>
+      <button className="btn" onClick={() => {toggleQuizStatus()}}>Start Quiz</button>
       {/* Add a method to start the quiz */}
     </div>
   );
