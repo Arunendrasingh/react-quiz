@@ -9,6 +9,7 @@ import Question from "./components/Question";
 import NextButton from "./components/NextButton";
 import PreviousButton from "./components/PreviousButton";
 import Progress from "./components/Progress";
+import RestartQuiz from "./components/RestartQuiz";
 
 function App() {
   // First start with useState hook then switch to useReducer hook.
@@ -65,6 +66,7 @@ function App() {
     setPoint(0);
   }
 
+
   return (
     <>
       <Header />
@@ -83,7 +85,8 @@ function App() {
               index={activeQuestion + 1}
               totalQuestion={totalQuestion}
               point={point}
-              totalPoint={totalQuestion*5}
+              totalPoint={totalQuestion * 5}
+              answer={answer}
             />
             <Question
               questionDetail={questions[activeQuestion]}
@@ -93,6 +96,7 @@ function App() {
             {(activeQuestion !== questions.length - 1) & (answer !== null) ? (
               <NextButton toggleButton={nextQuestion} />
             ) : null}
+            {activeQuestion+1 === questions.length && answer && <RestartQuiz toggleButton={() => setStatus("ready")}/>}
             {/* Do not support previous buttonfor now {activeQuestion !== 0 && (
               <PreviousButton toggleButton={previousQuestion} />
             )} */}
