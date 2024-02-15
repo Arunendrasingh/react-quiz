@@ -10,6 +10,7 @@ import NextButton from "./components/NextButton";
 import PreviousButton from "./components/PreviousButton";
 import Progress from "./components/Progress";
 import RestartQuiz from "./components/RestartQuiz";
+import FinishScreen from "./components/FinishScreen";
 
 function App() {
   // First start with useState hook then switch to useReducer hook.
@@ -42,6 +43,10 @@ function App() {
     if (correctAnswer === Number(answer)) {
       setPoint((s) => s + 5);
     }
+
+    if (Number(activeQuestion+1) === totalQuestion){
+      setStatus("finished")
+    }
   }
 
   // Load all question using use reducer
@@ -65,7 +70,6 @@ function App() {
     setAnswer(null);
     setPoint(0);
   }
-
 
   return (
     <>
@@ -96,10 +100,15 @@ function App() {
             {(activeQuestion !== questions.length - 1) & (answer !== null) ? (
               <NextButton toggleButton={nextQuestion} />
             ) : null}
-            {activeQuestion+1 === questions.length && answer && <RestartQuiz toggleButton={() => setStatus("ready")}/>}
             {/* Do not support previous buttonfor now {activeQuestion !== 0 && (
               <PreviousButton toggleButton={previousQuestion} />
             )} */}
+          </>
+        )}
+        {status === "finished" && (
+          <>
+            <FinishScreen point={point} maxPoint={totalQuestion * 5} />
+            <RestartQuiz toggleButton={() => setStatus("ready")} />
           </>
         )}
       </Main>
