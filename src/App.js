@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import "./App.css";
+
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Loader from "./components/Loader";
@@ -7,30 +9,27 @@ import Error from "./components/Error";
 import StartScreen from "./components/StartScreen";
 import Question from "./components/Question";
 import NextButton from "./components/NextButton";
-import PreviousButton from "./components/PreviousButton";
 import Progress from "./components/Progress";
 import RestartQuiz from "./components/RestartQuiz";
 import FinishScreen from "./components/FinishScreen";
+import Footer from "./components/Footer";
+import Timer from "./components/Timer";
 
 function App() {
   // First start with useState hook then switch to useReducer hook.
   const [questions, setQuestions] = useState([]);
   const [status, setStatus] = useState("loading"); // loading, error, ready, active, finished.
-  const totalQuestion = questions.length;
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [answer, setAnswer] = useState(null);
   const [point, setPoint] = useState(0);
 
+  const totalQuestion = questions.length;
   // Current Version do not support the previous button functionality.
 
   //  Methods to move the questions
   function nextQuestion() {
     setAnswer(null);
     setActiveQuestion(activeQuestion + 1);
-  }
-
-  function previousQuestion() {
-    setActiveQuestion(activeQuestion - 1);
   }
 
   // set answer
@@ -44,8 +43,8 @@ function App() {
       setPoint((s) => s + 5);
     }
 
-    if (Number(activeQuestion+1) === totalQuestion){
-      setStatus("finished")
+    if (Number(activeQuestion + 1) === totalQuestion) {
+      setStatus("finished");
     }
   }
 
@@ -97,9 +96,6 @@ function App() {
               toggleAnswer={setNewAnswer}
               questionAnswer={answer}
             />
-            {(activeQuestion !== questions.length - 1) & (answer !== null) ? (
-              <NextButton toggleButton={nextQuestion} />
-            ) : null}
             {/* Do not support previous buttonfor now {activeQuestion !== 0 && (
               <PreviousButton toggleButton={previousQuestion} />
             )} */}
@@ -112,6 +108,12 @@ function App() {
           </>
         )}
       </Main>
+      <Footer>
+        {status === "active" && <Timer setStatus={setStatus} />}
+        {(activeQuestion !== questions.length - 1) & (answer !== null) ? (
+          <NextButton toggleButton={nextQuestion} />
+        ) : null}
+      </Footer>
     </>
   );
 }
